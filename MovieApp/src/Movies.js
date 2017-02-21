@@ -19,7 +19,6 @@ import { API_KEY, routes } from './api';
 const IMAGE_WIDTH = 185 / 2;
 const IMAGE_HEIGHT = 280 / 2;
 
-
 class Movie extends Component {
 
     render() {
