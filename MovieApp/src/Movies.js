@@ -11,9 +11,10 @@ import {
     Image,
     ListView,
     Dimensions,
+    TouchableOpacity,
+    Navigator,
 } from 'react-native';
 
-import * as Animatable from 'react-native-animatable';
 import { API_KEY, routes } from './api';
 
 const IMAGE_WIDTH = 185 / 2;
@@ -22,21 +23,20 @@ const IMAGE_HEIGHT = 280 / 2;
 class Movie extends Component {
 
     render() {
-        const { movie } = this.props;
+        const { movie, navigator } = this.props;
         const imageUrl = routes.poster
             .replace(':poster_name', movie.poster_path);
+        const movieWithPoster = {
+            ...movie,
+            url: imageUrl,
+        };
 
         return (
-            <Animatable.View
-                animation="bounceInUp"
-                duration={1500}
-                useNativeDriver
+            <TouchableOpacity
+                onPress={() => navigator.push({ name: 'details', props: { movie: movieWithPoster } })}
             >
                 <View style={{
                     flexDirection: 'column',
-                    elevation: 10,
-                    backgroundColor: 'black',
-                    borderRadius: 2,
                     alignItems: 'flex-start',
                     justifyContent: 'flex-start',
                 }}>
@@ -61,13 +61,14 @@ class Movie extends Component {
                         { movie.title }
                     </Text>
                 </View>
-            </Animatable.View>
+            </TouchableOpacity>
         );
     }
 }
 
 Movie.propTypes = {
     movie: React.PropTypes.object,
+    navigator: React.PropTypes.object,
 };
 
 export default class Movies extends Component {
@@ -93,11 +94,6 @@ export default class Movies extends Component {
 
     render() {
         const { movies } = this.state;
-        const { width } = Dimensions.get('window');
-
-        const padding =  Math.floor((width % 3) / 2);
-
-        console.log(width, padding);
 
         if (!movies.length) {
             return <Text>Loading...</Text>;
@@ -117,6 +113,7 @@ export default class Movies extends Component {
                     <Movie
                         key={i}
                         movie={movie}
+                        navigator={this.props.navigator}
                     />
                 )}
             />

@@ -11,6 +11,6 @@ import {
   View
 } from 'react-native';
 
-import Movies from './src/Movies';
+import Main from './Main';
 
-AppRegistry.registerComponent('MovieApp', () => Movies);
+AppRegistry.registerComponent('MovieApp', () => Main);
